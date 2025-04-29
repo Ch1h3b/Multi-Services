@@ -1,0 +1,25 @@
+services:
+  nginx:
+    build: nginx
+    ports:
+      - "80:80"
+
+  waf:
+    build: waf
+    environment:
+      - PROXY_HOST=http://api:5000
+    restart: unless-stopped
+
+  api:
+    build: app
+    environment:
+      MYSQL_PASSWORD: password
+
+  db:
+    build: db
+    environment:
+      MYSQL_USER: app
+      MYSQL_DATABASE: app
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root_password
+
